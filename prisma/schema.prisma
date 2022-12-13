@@ -1,0 +1,22 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Notifications {
+  id          String    @id //primary key, definimos primary key usando o @
+  recipientId String //
+  content     String //conteúdo da notificação
+  category    String
+  readAt      DateTime? //pode ser nulla, pois a pessoa pode nao ter lido a notificação, então por isso da ? , significa null
+  createAt    DateTime  @default(now()) //vai preencher esse campo com a data atual, caso não seja informada
+
+  @@index([recipientId]) //indice do repicientID, o recipientID é como se fosse uma chave strangeira, ou seja, esse id é o id do usuario em outro serviço de notificação, é uma referencia que esta sendo usada em outro serviço, que estou usando aqui
+}
